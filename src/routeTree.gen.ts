@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminCommentariesRouteImport } from './routes/admin.commentaries'
 import { Route as AdminEntriesRouteImport } from './routes/admin.entries'
 
 const IndexRoute = IndexRouteImport.update({
@@ -29,6 +30,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminCommentariesRoute = AdminCommentariesRouteImport.update({
+  id: '/commentaries',
+  path: '/commentaries',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminEntriesRoute = AdminEntriesRouteImport.update({
   id: '/entries',
   path: '/entries',
@@ -38,11 +44,13 @@ const AdminEntriesRoute = AdminEntriesRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
+  '/admin/commentaries': typeof AdminCommentariesRoute
   '/admin/entries': typeof AdminEntriesRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin/commentaries': typeof AdminCommentariesRoute
   '/admin/entries': typeof AdminEntriesRoute
   '/admin': typeof AdminIndexRoute
 }
@@ -50,15 +58,23 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
+  '/admin/commentaries': typeof AdminCommentariesRoute
   '/admin/entries': typeof AdminEntriesRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/admin/entries' | '/admin/'
+  fullPaths:
+    '/' | '/admin' | '/admin/commentaries' | '/admin/entries' | '/admin/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin/entries' | '/admin'
-  id: '__root__' | '/' | '/admin' | '/admin/entries' | '/admin/'
+  to: '/' | '/admin/commentaries' | '/admin/entries' | '/admin'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/admin/commentaries'
+    | '/admin/entries'
+    | '/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -89,6 +105,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/commentaries': {
+      id: '/admin/commentaries'
+      path: '/commentaries'
+      fullPath: '/admin/commentaries'
+      preLoaderRoute: typeof AdminCommentariesRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/entries': {
       id: '/admin/entries'
       path: '/entries'
@@ -100,11 +123,13 @@ declare module '@tanstack/react-router' {
 }
 
 interface AdminRouteChildren {
+  AdminCommentariesRoute: typeof AdminCommentariesRoute
   AdminEntriesRoute: typeof AdminEntriesRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminCommentariesRoute: AdminCommentariesRoute,
   AdminEntriesRoute: AdminEntriesRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
