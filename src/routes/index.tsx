@@ -26,14 +26,14 @@ export const Route = createFileRoute("/")({
 });
 
 function ReadingRoom() {
-  const [selectedId, setSelectedId] = useState(entries[0].id);
+  const [selectedId, setSelectedId] = useState(entries[0]!.id);
   const [query, setQuery] = useState("");
   const [collection, setCollection] = useState<string | null>(null);
   const [perspective, setPerspective] = useState<string | null>(null);
   const [focusedNode, setFocusedNode] = useState<string | null>(null);
   const [ledgerOpen, setLedgerOpen] = useState(false);
 
-  const entry = entries.find((e) => e.id === selectedId) ?? entries[0];
+  const entry = entries.find((e) => e.id === selectedId) ?? entries[0]!;
 
   const select = (id: string) => {
     setSelectedId(id);
